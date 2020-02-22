@@ -2,8 +2,6 @@ package domains
 
 import (
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 //Response formats the returned payload
@@ -19,10 +17,9 @@ type Response struct {
 type Category struct {
 	ID   int64  `json:"category_id"`
 	Name string `json:"category_name"`
-	gorm.Model
 }
 
 //Repository defines how to store category of
 type Repository interface {
-	Store(name string) Response
+	Store(c *Category) Response
 }
