@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"database/sql"
+	"log"
 
 	"github.com/muathendirangu/lavida-api/domains"
 )
@@ -33,4 +34,27 @@ func (r *repository) Store(category *domains.Category) error {
 	}
 	category.ID = lastID
 	return nil
+}
+
+func (r *repository) Get() []*domains.Category {
+	query := `SELECT * FROM trip_category`
+	rows, err := r.conn.Query(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	result := make([]*domains.Category, 0)
+	for rows.Next() {
+		categories := new(domains.Category)
+		err := rows.Scan(
+			&categories.ID,
+			&categories.Name,
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		result = append(result, categories)
+	}
+	return result
 }
