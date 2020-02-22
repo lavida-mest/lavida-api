@@ -19,7 +19,7 @@ type Category struct {
 	Name string `json:"category_name"`
 }
 
-//Repository defines how to store category of
+//Repository defines how to store category
 type Repository interface {
-	Store(c *Category) Response
+	Store(category *Category) error
 }
