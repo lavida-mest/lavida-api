@@ -15,6 +15,6 @@ func NewService(userRepo domains.Repository) Service {
 	}
 }
 
-func (s *service) Store(category *domains.Category) domains.Response {
+func (s *service) AddCategory(category *domains.Category) error {
 	return s.repo.Store(category)
 }
