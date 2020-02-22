@@ -17,30 +17,20 @@ func New(conn *sql.DB) domains.Repository {
 	}
 }
 
-func (r *repository) Store(category *domains.Category) domains.Response {
+func (r *repository) Store(category *domains.Category) error {
 	query := `INSERT category SET category_name=?`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
-		return domains.Response{
-			Success: false,
-			Message: "failed to prepare the SQL query statement of inserting category",
-			Errors:  err.Error(),
-			Payload: err.Error(),
-		}
+		return err
 	}
 	res, err := stmt.Exec(category.Name)
 	if err != nil {
-		return domains.Response{
-			Success: false,
-			Message: "failed to insert the category to the database",
-			Errors:  err.Error(),
-			Payload: err.Error(),
-		}
+		return err
 	}
-	return domains.Response{
-		Success: true,
-		Message: "successfully created a category",
-		Errors:  nil,
-		Payload: res,
+	lastID, err := res.LastInsertId()
+	if err != nil {
+		return err
 	}
+	category.ID = lastID
+	return nil
 }
