@@ -18,7 +18,7 @@ func New(conn *sql.DB) domains.Repository {
 }
 
 func (r *repository) Store(category *domains.Category) error {
-	query := `INSERT category SET category_name=?`
+	query := `INSERT trip_category SET category_name=?`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		return err
