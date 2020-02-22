@@ -22,4 +22,5 @@ type Category struct {
 //Repository defines how to store category
 type Repository interface {
 	Store(category *Category) error
+	Get() []*Category
 }

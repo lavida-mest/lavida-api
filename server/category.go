@@ -2,7 +2,6 @@ package server
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -22,7 +21,7 @@ func (c *categoryHandler) router() chi.Router {
 
 	r.Route("/category", func(r chi.Router) {
 		r.Post("/", c.addCategory)
-
+		r.Get("/", c.getCategories)
 	})
 	return r
 }
@@ -30,7 +29,6 @@ func (c *categoryHandler) router() chi.Router {
 func (c *categoryHandler) addCategory(w http.ResponseWriter, r *http.Request) {
 	var category domains.Category
 	err := json.NewDecoder(r.Body).Decode(&category)
-	fmt.Println(err)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -41,4 +39,15 @@ func (c *categoryHandler) addCategory(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write([]byte("category created"))
 
+}
+
+func (c *categoryHandler) getCategories(w http.ResponseWriter, r *http.Request) {
+	var categories []*domains.Category
+	categories = c.usecase.GetCategories()
+	payload, err := json.Marshal(categories)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(payload)
 }
