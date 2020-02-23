@@ -12,8 +12,10 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	_mysql "github.com/muathendirangu/lavida-api/category/mysql"
-	_usecase "github.com/muathendirangu/lavida-api/category/usecase"
+	_categoryRepo "github.com/muathendirangu/lavida-api/category/mysql"
+	_categoryUsecase "github.com/muathendirangu/lavida-api/category/usecase"
+	_guideRepo "github.com/muathendirangu/lavida-api/guide/mysql"
+	_guideUsecase "github.com/muathendirangu/lavida-api/guide/usecase"
 	"github.com/muathendirangu/lavida-api/server"
 )
 
@@ -42,13 +44,16 @@ func main() {
 		}
 	}()
 
-	category := _mysql.New(dbConn)
-	categoryUsecase := _usecase.NewService(category)
-	srv := server.New(categoryUsecase)
+	category := _categoryRepo.NewCategoryRepository(dbConn)
+	categoryUsecase := _categoryUsecase.NewService(category)
+
+	guide := _guideRepo.NewGuideRepository(dbConn)
+	guideUsecase := _guideUsecase.NewService(guide)
+
+	srv := server.New(categoryUsecase, guideUsecase)
 
 	errs := make(chan error, 2)
 	go func() {
-		log.Fatalln(http.ListenAndServe(":8080", srv))
 		errs <- http.ListenAndServe(":8080", srv)
 	}()
 	go func() {
