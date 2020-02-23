@@ -44,10 +44,10 @@ func main() {
 		}
 	}()
 
-	category := _categoryRepo.NewCategoryRepository(dbConn)
+	category := _categoryRepo.New(dbConn)
 	categoryUsecase := _categoryUsecase.NewService(category)
 
-	guide := _guideRepo.NewGuideRepository(dbConn)
+	guide := _guideRepo.New(dbConn)
 	guideUsecase := _guideUsecase.NewService(guide)
 
 	srv := server.New(categoryUsecase, guideUsecase)
