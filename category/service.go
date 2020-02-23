@@ -8,4 +8,5 @@ import (
 type Service interface {
 	AddCategory(category *domains.Category) error
 	GetCategories() []*domains.Category
+	GetCategory(ID int) *domains.Category
 }
