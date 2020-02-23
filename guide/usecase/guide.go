@@ -16,3 +16,7 @@ func NewService(guideRepo guide.Repository) guide.Service {
 func (s *service) AddGuide(guide *guide.Guide) error {
 	return s.repo.Store(guide)
 }
+
+func (s *service) GetGuides() []*guide.Guide {
+	return s.repo.Get()
+}
