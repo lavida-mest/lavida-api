@@ -22,3 +22,7 @@ func (s *service) AddCategory(category *domains.Category) error {
 func (s *service) GetCategories() []*domains.Category {
 	return s.repo.Get()
 }
+
+func (s *service) GetCategory(ID int) *domains.Category {
+	return s.repo.GetByID(ID)
+}
