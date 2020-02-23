@@ -19,7 +19,7 @@ func (g *guideHandler) router() chi.Router {
 
 	r.Route("/", func(r chi.Router) {
 		r.Post("/", g.addGuide)
-
+		r.Get("/", g.getGuides)
 	})
 	return r
 }
@@ -37,4 +37,15 @@ func (g *guideHandler) addGuide(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write([]byte("guide created"))
 
+}
+
+func (g *guideHandler) getGuides(w http.ResponseWriter, r *http.Request) {
+	var guides []*guide.Guide
+	guides = g.usecase.GetGuides()
+	payload, err := json.Marshal(guides)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(payload)
 }
