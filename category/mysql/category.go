@@ -11,8 +11,8 @@ type repository struct {
 	conn *sql.DB
 }
 
-//New creates a new instance of repository
-func New(conn *sql.DB) category.Repository {
+//NewCategoryRepository creates a new instance of category repository
+func NewCategoryRepository(conn *sql.DB) category.Repository {
 	return &repository{
 		conn: conn,
 	}

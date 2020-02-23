@@ -7,9 +7,9 @@ type service struct {
 }
 
 //NewService creates the category service/usecase
-func NewService(userRepo category.Repository) category.Service {
+func NewService(catRepo category.Repository) category.Service {
 	return &service{
-		repo: userRepo,
+		repo: catRepo,
 	}
 }
 

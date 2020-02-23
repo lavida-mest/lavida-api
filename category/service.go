@@ -1,6 +1,6 @@
 package category
 
-//Service is an interface provides categories methods/usecases
+//Service or Usecase is an interface provides categories methods
 type Service interface {
 	AddCategory(category *Category) error
 	GetCategories() []*Category
