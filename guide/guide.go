@@ -12,4 +12,5 @@ type Guide struct {
 //Repository defines how to store Guide
 type Repository interface {
 	Store(guide *Guide) error
+	Get() []*Guide
 }
