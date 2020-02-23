@@ -58,3 +58,17 @@ func (r *repository) Get() []*domains.Category {
 	}
 	return result
 }
+
+func (r *repository) GetByID(ID int) *domains.Category {
+	var category = domains.Category{}
+	query := `SELECT * FROM trip_category WHERE category_id=?`
+	err := r.conn.QueryRow(query, ID).Scan(&category.ID, &category.Name)
+	switch {
+	case err == sql.ErrNoRows:
+		log.Printf("no category with ID %v", ID)
+	case err != nil:
+		log.Fatalf("an error %v occurred", err)
+
+	}
+	return &category
+}
