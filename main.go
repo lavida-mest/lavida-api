@@ -12,8 +12,8 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 
-	_categoryUscase "github.com/muathendirangu/lavida-api/category"
 	_mysql "github.com/muathendirangu/lavida-api/category/mysql"
+	_usecase "github.com/muathendirangu/lavida-api/category/usecase"
 	"github.com/muathendirangu/lavida-api/server"
 )
 
@@ -43,7 +43,7 @@ func main() {
 	}()
 
 	category := _mysql.New(dbConn)
-	categoryUsecase := _categoryUscase.NewService(category)
+	categoryUsecase := _usecase.NewService(category)
 	srv := server.New(categoryUsecase)
 
 	errs := make(chan error, 2)

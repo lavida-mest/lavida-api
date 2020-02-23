@@ -7,8 +7,6 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi"
-	"github.com/muathendirangu/lavida-api/domains"
-
 	"github.com/muathendirangu/lavida-api/category"
 )
 
@@ -29,7 +27,7 @@ func (c *categoryHandler) router() chi.Router {
 }
 
 func (c *categoryHandler) addCategory(w http.ResponseWriter, r *http.Request) {
-	var category domains.Category
+	var category category.Category
 	err := json.NewDecoder(r.Body).Decode(&category)
 	if err != nil {
 		log.Fatal(err)
@@ -44,7 +42,7 @@ func (c *categoryHandler) addCategory(w http.ResponseWriter, r *http.Request) {
 }
 
 func (c *categoryHandler) getCategories(w http.ResponseWriter, r *http.Request) {
-	var categories []*domains.Category
+	var categories []*category.Category
 	categories = c.usecase.GetCategories()
 	payload, err := json.Marshal(categories)
 	if err != nil {

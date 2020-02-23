@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"github.com/muathendirangu/lavida-api/domains"
+	"github.com/muathendirangu/lavida-api/category"
 )
 
 type repository struct {
@@ -12,13 +12,13 @@ type repository struct {
 }
 
 //New creates a new instance of repository
-func New(conn *sql.DB) domains.Repository {
+func New(conn *sql.DB) category.Repository {
 	return &repository{
 		conn: conn,
 	}
 }
 
-func (r *repository) Store(category *domains.Category) error {
+func (r *repository) Store(category *category.Category) error {
 	query := `INSERT trip_category SET category_name=?`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
@@ -36,7 +36,7 @@ func (r *repository) Store(category *domains.Category) error {
 	return nil
 }
 
-func (r *repository) Get() []*domains.Category {
+func (r *repository) Get() []*category.Category {
 	query := `SELECT * FROM trip_category`
 	rows, err := r.conn.Query(query)
 	if err != nil {
@@ -44,9 +44,9 @@ func (r *repository) Get() []*domains.Category {
 	}
 	defer rows.Close()
 
-	result := make([]*domains.Category, 0)
+	result := make([]*category.Category, 0)
 	for rows.Next() {
-		categories := new(domains.Category)
+		categories := new(category.Category)
 		err := rows.Scan(
 			&categories.ID,
 			&categories.Name,
@@ -59,8 +59,8 @@ func (r *repository) Get() []*domains.Category {
 	return result
 }
 
-func (r *repository) GetByID(ID int) *domains.Category {
-	var category = domains.Category{}
+func (r *repository) GetByID(ID int) *category.Category {
+	var category = category.Category{}
 	query := `SELECT * FROM trip_category WHERE category_id=?`
 	err := r.conn.QueryRow(query, ID).Scan(&category.ID, &category.Name)
 	switch {

@@ -1,12 +1,8 @@
 package category
 
-import (
-	"github.com/muathendirangu/lavida-api/domains"
-)
-
 //Service is an interface provides categories methods/usecases
 type Service interface {
-	AddCategory(category *domains.Category) error
-	GetCategories() []*domains.Category
-	GetCategory(ID int) *domains.Category
+	AddCategory(category *Category) error
+	GetCategories() []*Category
+	GetCategory(ID int) *Category
 }

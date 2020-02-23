@@ -1,28 +1,27 @@
 package category
 
 import (
-	"github.com/muathendirangu/lavida-api/domains"
+	"time"
 )
 
-type service struct {
-	repo domains.Repository
+//Response formats the returned payload
+type Response struct {
+	Success   bool        `json:"success:omitempty"`
+	Message   string      `json:"message,omitempty"`
+	Timestamp time.Time   `json:"timestamp,omitempty"`
+	Errors    interface{} `json:"errors,omitempty"`
+	Payload   interface{} `json:"payload,omitempty"`
 }
 
-//NewService creates the category service/usecase
-func NewService(userRepo domains.Repository) Service {
-	return &service{
-		repo: userRepo,
-	}
+//Category of trip
+type Category struct {
+	ID   int64  `json:"category_id"`
+	Name string `json:"category_name"`
 }
 
-func (s *service) AddCategory(category *domains.Category) error {
-	return s.repo.Store(category)
-}
-
-func (s *service) GetCategories() []*domains.Category {
-	return s.repo.Get()
-}
-
-func (s *service) GetCategory(ID int) *domains.Category {
-	return s.repo.GetByID(ID)
+//Repository defines how to store category
+type Repository interface {
+	Store(category *Category) error
+	Get() []*Category
+	GetByID(ID int) *Category
 }
