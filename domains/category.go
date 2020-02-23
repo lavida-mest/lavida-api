@@ -23,4 +23,5 @@ type Category struct {
 type Repository interface {
 	Store(category *Category) error
 	Get() []*Category
+	GetByID(ID int) *Category
 }

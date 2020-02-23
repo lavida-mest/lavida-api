@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi"
 	"github.com/muathendirangu/lavida-api/domains"
@@ -22,6 +23,7 @@ func (c *categoryHandler) router() chi.Router {
 	r.Route("/category", func(r chi.Router) {
 		r.Post("/", c.addCategory)
 		r.Get("/", c.getCategories)
+		r.Get("/{ID}", c.getCategory)
 	})
 	return r
 }
@@ -45,6 +47,21 @@ func (c *categoryHandler) getCategories(w http.ResponseWriter, r *http.Request) 
 	var categories []*domains.Category
 	categories = c.usecase.GetCategories()
 	payload, err := json.Marshal(categories)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(payload)
+}
+
+func (c *categoryHandler) getCategory(w http.ResponseWriter, r *http.Request) {
+	ID := chi.URLParam(r, "ID")
+	catID, err := strconv.Atoi(ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	category := c.usecase.GetCategory(catID)
+	payload, err := json.Marshal(category)
 	if err != nil {
 		log.Fatal(err)
 	}
