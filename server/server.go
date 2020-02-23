@@ -20,9 +20,9 @@ func New(cs category.Service) *Server {
 	}
 	r := chi.NewRouter()
 	r.Use(accessControl)
-	r.Route("/category", func(r chi.Router) {
+	r.Route("/trip", func(r chi.Router) {
 		h := categoryHandler{s.Category}
-		r.Mount("/v1", h.router())
+		r.Mount("/", h.router())
 	})
 	s.router = r
 	return s
