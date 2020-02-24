@@ -18,8 +18,8 @@ func New(conn *sql.DB) trip.Repository {
 }
 
 func (r *repository) Store(trip *trip.Trip) error {
-	query := `INSERT INTO trip (trip_name, trip_location, trip_description, trip_activity, trip_price, trip_capacity, \
-		trip_month, trip_year, trip_duration, trip_type, traveler_type, price_visibilty, trip_availability, \
+	query := `INSERT INTO trip (trip_name, trip_location, trip_description, trip_activity, trip_price, trip_capacity, 
+		trip_month, trip_year, trip_duration, trip_type, traveler_type, price_visibilty, trip_availability, 
 		trip_status,tour_guide) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
