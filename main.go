@@ -17,6 +17,8 @@ import (
 	_guideRepo "github.com/muathendirangu/lavida-api/guide/mysql"
 	_guideUsecase "github.com/muathendirangu/lavida-api/guide/usecase"
 	"github.com/muathendirangu/lavida-api/server"
+	_tripRepo "github.com/muathendirangu/lavida-api/trip/mysql"
+	_tripUsecase "github.com/muathendirangu/lavida-api/trip/usecase"
 )
 
 func main() {
@@ -50,7 +52,10 @@ func main() {
 	guide := _guideRepo.New(dbConn)
 	guideUsecase := _guideUsecase.NewService(guide)
 
-	srv := server.New(categoryUsecase, guideUsecase)
+	trip := _tripRepo.New(dbConn)
+	tripUsecase := _tripUsecase.NewService(trip)
+
+	srv := server.New(categoryUsecase, guideUsecase, tripUsecase)
 
 	errs := make(chan error, 2)
 	go func() {
@@ -63,6 +68,4 @@ func main() {
 	}()
 
 	log.Fatal("terminated", <-errs)
-
-	fmt.Println("I have linked up ssh is working ")
 }
