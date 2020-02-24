@@ -18,7 +18,7 @@ type categoryHandler struct {
 func (c *categoryHandler) router() chi.Router {
 	r := chi.NewRouter()
 
-	r.Route("/category", func(r chi.Router) {
+	r.Route("/", func(r chi.Router) {
 		r.Post("/", c.addCategory)
 		r.Get("/", c.getCategories)
 		r.Get("/{ID}", c.getCategory)

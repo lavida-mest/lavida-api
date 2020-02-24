@@ -3,6 +3,8 @@ package server
 import (
 	"net/http"
 
+	"github.com/muathendirangu/lavida-api/trip"
+
 	"github.com/muathendirangu/lavida-api/guide"
 
 	"github.com/go-chi/chi"
@@ -13,23 +15,29 @@ import (
 type Server struct {
 	Category category.Service
 	Guide    guide.Service
+	Trip     trip.Service
 	router   chi.Router
 }
 
 //New returns a new HTTP server
-func New(cs category.Service, gs guide.Service) *Server {
+func New(cs category.Service, gs guide.Service, ts trip.Service) *Server {
 	s := &Server{
 		Category: cs,
 		Guide:    gs,
+		Trip:     ts,
 	}
 	r := chi.NewRouter()
 	r.Use(accessControl)
-	r.Route("/trip", func(r chi.Router) {
+	r.Route("/category", func(r chi.Router) {
 		h := categoryHandler{s.Category}
 		r.Mount("/", h.router())
 	})
 	r.Route("/guide", func(r chi.Router) {
 		h := guideHandler{s.Guide}
+		r.Mount("/", h.router())
+	})
+	r.Route("/trip", func(r chi.Router) {
+		h := tripHandler{s.Trip}
 		r.Mount("/", h.router())
 	})
 	s.router = r
