@@ -38,7 +38,7 @@ func (r *repository) Store(trip *trip.Trip) error {
 }
 
 func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []*trip.Trip {
-	query := `SELECT * FROM trip WHERE trip_location=? OR trip_duration=? OR traveler_type=? OR trip_month=? OR trip_year=?`
+	query := `SELECT trip_id, trip_name, trip_location, trip_month, trip_year, trip_price FROM trip WHERE trip_location=? OR trip_duration=? OR traveler_type=? OR trip_month=? OR trip_year=?`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
@@ -56,19 +56,9 @@ func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []
 			&trips.ID,
 			&trips.Name,
 			&trips.Location,
-			&trips.Description,
-			&trips.Activity,
-			&trips.Price,
-			&trips.Capacity,
 			&trips.Month,
 			&trips.Year,
-			&trips.Duration,
-			&trips.Type,
-			&trips.Traveler,
-			&trips.IsPriceOn,
-			&trips.IsFull,
-			&trips.Status,
-			&trips.Guide,
+			&trips.Price,
 		)
 		if err != nil {
 			log.Fatal(err)
