@@ -16,3 +16,7 @@ func NewService(tripRepo trip.Repository) trip.Service {
 func (s *service) AddTrip(trip *trip.Trip) error {
 	return s.repo.Store(trip)
 }
+
+func (s *service) SearchTrip(Location, Duration, Traveler, Month, Year string) []*trip.Trip {
+	return s.repo.Search(Location, Duration, Traveler, Month, Year)
+}

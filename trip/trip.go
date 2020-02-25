@@ -11,7 +11,7 @@ type Trip struct {
 	Capacity    int     `json:"trip_capacity"`
 	Month       string  `json:"trip_month"`
 	Year        string  `json:"trip_year"`
-	Duration    int     `json:"trip_duration"`
+	Duration    string  `json:"trip_duration"`
 	Type        string  `json:"trip_type"`
 	Traveler    string  `json:"traveler_type"`
 	IsPriceOn   bool    `json:"price_visibilty"`
@@ -23,4 +23,5 @@ type Trip struct {
 //Repository defines how to store Trip
 type Repository interface {
 	Store(trip *Trip) error
+	Search(Location, Duration, Traveler, Month, Year string) []*Trip
 }
