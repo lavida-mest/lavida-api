@@ -2,6 +2,7 @@ package mysql
 
 import (
 	"database/sql"
+	"log"
 
 	"github.com/muathendirangu/lavida-api/trip"
 )
@@ -34,4 +35,45 @@ func (r *repository) Store(trip *trip.Trip) error {
 	lasTP, err := res.LastInsertId()
 	trip.ID = lasTP
 	return nil
+}
+
+func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []*trip.Trip {
+	query := `SELECT * FROM trip WHERE trip_location=? OR trip_duration=? OR traveler_type=? OR trip_month=? OR trip_year=?`
+	stmt, err := r.conn.Prepare(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	rows, err := stmt.Query(Location, Duration, Traveler, Month, Year)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	result := make([]*trip.Trip, 0)
+	for rows.Next() {
+		trips := new(trip.Trip)
+		err := rows.Scan(
+			&trips.ID,
+			&trips.Name,
+			&trips.Location,
+			&trips.Description,
+			&trips.Activity,
+			&trips.Price,
+			&trips.Capacity,
+			&trips.Month,
+			&trips.Year,
+			&trips.Duration,
+			&trips.Type,
+			&trips.Traveler,
+			&trips.IsPriceOn,
+			&trips.IsFull,
+			&trips.Status,
+			&trips.Guide,
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		result = append(result, trips)
+	}
+	return result
 }

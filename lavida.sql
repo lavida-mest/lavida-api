@@ -27,7 +27,7 @@ CREATE TABLE `trip` (
   `trip_capacity` int(11) NOT NULL,
   `trip_month` varchar(45) NOT NULL,
   `trip_year` varchar(45) NOT NULL,
-  `trip_duration` int(8) NOT NULL,
+  `trip_duration` varchar(48) NOT NULL,
   `trip_type` varchar(45) NOT NULL,
   `traveler_type` varchar(45) NOT NULL,
   `price_visibilty` boolean NOT NULL DEFAULT true,
