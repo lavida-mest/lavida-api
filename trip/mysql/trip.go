@@ -91,7 +91,7 @@ func (r *repository) View(ID, Guide int64) *trip.Trip {
 	)
 	switch {
 	case err == sql.ErrNoRows:
-		log.Fatalf("the criteria you choose does not exist with ID %v", ID)
+		log.Printf("the criteria you choose does not exist with ID %v", ID)
 	case err != nil:
 		log.Fatalf("an error %v occurred", err)
 
