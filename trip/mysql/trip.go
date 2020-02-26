@@ -71,3 +71,30 @@ func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []
 	}
 	return result
 }
+
+func (r *repository) View(ID, Guide int64) *trip.Trip {
+	var trip = trip.Trip{}
+	query := `SELECT trip_id, trip_name, trip_location, trip_description, trip_price, tour_guide_name, category, tour_guide, category_name, 
+	trip_activity FROM trip INNER JOIN guide ON trip.tour_guide = guide.tour_guide_id 
+	INNER JOIN trip_category ON guide.category=trip_category.category_id WHERE trip_id=? AND tour_guide=?;`
+	err := r.conn.QueryRow(query, ID, Guide).Scan(
+		&trip.ID,
+		&trip.Name,
+		&trip.Location,
+		&trip.Description,
+		&trip.Price,
+		&trip.Month,  //references tour_guide_name
+		&trip.ID,     //references category_id
+		&trip.ID,     //references tour_guide
+		&trip.Status, //references category_name
+		&trip.Activity,
+	)
+	switch {
+	case err == sql.ErrNoRows:
+		log.Fatalf("the criteria you choose does not exist with ID %v", ID)
+	case err != nil:
+		log.Fatalf("an error %v occurred", err)
+
+	}
+	return &trip
+}

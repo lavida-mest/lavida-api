@@ -20,3 +20,7 @@ func (s *service) AddTrip(trip *trip.Trip) error {
 func (s *service) SearchTrip(Location, Duration, Traveler, Month, Year string) []*trip.Trip {
 	return s.repo.Search(Location, Duration, Traveler, Month, Year)
 }
+
+func (s *service) ViewTrip(ID, Guide int64) *trip.Trip {
+	return s.repo.View(ID, Guide)
+}

@@ -4,4 +4,5 @@ package trip
 type Service interface {
 	AddTrip(trip *Trip) error
 	SearchTrip(Location, Duration, Traveler, Month, Year string) []*Trip
+	ViewTrip(ID, Guide int64) *Trip
 }
