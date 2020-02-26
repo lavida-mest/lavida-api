@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/go-chi/chi"
 	"github.com/muathendirangu/lavida-api/trip"
@@ -20,6 +21,7 @@ func (g *tripHandler) router() chi.Router {
 	r.Route("/", func(r chi.Router) {
 		r.Post("/", g.addTrip)
 		r.Get("/search/{trip_location}&{trip_duration}&{traveler_type}&{trip_month}&{trip_year}", g.searchTrip)
+		r.Get("/{ID}&{guideID}", g.viewTrip)
 	})
 	return r
 }
@@ -45,6 +47,27 @@ func (g *tripHandler) searchTrip(w http.ResponseWriter, r *http.Request) {
 	Month := chi.URLParam(r, "trip_month")
 	Year := chi.URLParam(r, "trip_year")
 	trips := g.usecase.SearchTrip(Location, Duration, Traveler, Month, Year)
+	payload, err := json.Marshal(trips)
+	if err != nil {
+		log.Fatal(err)
+	}
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Write(payload)
+}
+
+func (g *tripHandler) viewTrip(w http.ResponseWriter, r *http.Request) {
+	ID := chi.URLParam(r, "ID")
+	guide := chi.URLParam(r, "guideID")
+	tripID, err := strconv.Atoi(ID)
+	if err != nil {
+		log.Fatal(err)
+	}
+	guideID, err := strconv.Atoi(guide)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	trips := g.usecase.ViewTrip(int64(tripID), int64(guideID))
 	payload, err := json.Marshal(trips)
 	if err != nil {
 		log.Fatal(err)
