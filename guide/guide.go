@@ -6,7 +6,7 @@ type Guide struct {
 	Name     string `json:"tour_guide_name"`
 	Email    string `json:"tour_guide_email"`
 	Number   string `json:"tour_guide_number"`
-	Category int64  `json:"category"`
+	Category int64  `json:"category_id"`
 }
 
 //Repository defines how to store Guide
