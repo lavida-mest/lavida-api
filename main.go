@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/url"
 	"os"
 	"os/signal"
 	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 
 	_categoryRepo "github.com/muathendirangu/lavida-api/category/mysql"
 	_categoryUsecase "github.com/muathendirangu/lavida-api/category/usecase"
@@ -22,14 +22,20 @@ import (
 )
 
 func main() {
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("sad .env file found")
+	}
 
-	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", "root", "root", "localhost", "3306", "lavida")
+	var err error
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error getting env, %v", err)
+	}
 
-	val := url.Values{}
-	val.Add("parseTime", "1")
-	val.Add("loc", "Africa/Accra")
-	dsn := fmt.Sprintf("%s?%s", connection, val.Encode())
-	dbConn, err := sql.Open(`mysql`, dsn)
+	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	dbConn, err := sql.Open(`mysql`, connection)
 	if err != nil {
 		fmt.Println(err)
 	}
