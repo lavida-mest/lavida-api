@@ -21,7 +21,7 @@ func New(conn *sql.DB) trip.Repository {
 func (r *repository) Store(trip *trip.Trip) error {
 	query := `INSERT INTO trip (trip_name, trip_location, trip_description, trip_activity, trip_price, trip_capacity, 
 		trip_month, trip_year, trip_duration, trip_type, traveler_type, price_visibilty, trip_availability, 
-		trip_status,tour_guide_id) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+		trip_status,tour_guide) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		return err
@@ -38,9 +38,9 @@ func (r *repository) Store(trip *trip.Trip) error {
 }
 
 func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []*trip.Trip {
-	query := `SELECT tr.trip_id, tr.trip_name, tr.trip_location, tr.trip_month, tr.trip_year, tr.trip_price , tr.tour_guide_id, guide.tour_guide_name FROM trip AS tr
-		 INNER JOIN guide ON tr.tour_guide_id=guide.tour_guide_id WHERE trip_location=? OR trip_duration=? OR traveler_type=? OR trip_month=? OR trip_year=? 
-	 AND guide.tour_guide_id=tr.tour_guide_id`
+	query := `SELECT tr.trip_id, tr.trip_name, tr.trip_location, tr.trip_month, tr.trip_year, tr.trip_price , tr.tour_guide, guide.tour_guide_name FROM trip AS tr
+		 INNER JOIN guide ON tr.tour_guide=guide.tour_guide_id WHERE trip_location=? OR trip_duration=? OR traveler_type=? OR trip_month=? OR trip_year=? 
+	 AND guide.tour_guide_id=tr.tour_guide`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
@@ -74,8 +74,8 @@ func (r *repository) Search(Location, Duration, Traveler, Month, Year string) []
 
 func (r *repository) View(ID, Guide int64) *trip.Trip {
 	var trip = trip.Trip{}
-	query := `SELECT trip_id, trip_name, trip_location, trip_description, trip_price, tour_guide_name, trip.tour_guide_id, trip_category.category_name, 
-	trip_activity FROM trip INNER JOIN guide ON trip.tour_guide_id = guide.tour_guide_id 
+	query := `SELECT trip_id, trip_name, trip_location, trip_description, trip_price, tour_guide_name, trip.tour_guide, trip_category.category_name, 
+	trip_activity FROM trip INNER JOIN guide ON trip.tour_guide = guide.tour_guide_id 
 	INNER JOIN trip_category ON guide.category_id=trip_category.category_id WHERE trip_id=? AND guide.tour_guide_id=?;`
 	err := r.conn.QueryRow(query, ID, Guide).Scan(
 		&trip.ID,
