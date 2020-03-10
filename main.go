@@ -34,7 +34,7 @@ func main() {
 	}
 
 	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-		os.Getenv("RDS_USERNAME"), os.Getenv("RDS_PASSWORD"), os.Getenv("RDS_HOSTNAME"), os.Getenv("RDS_PORT"), os.Getenv("RDS_DB_NAME"))
+		os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
 	dbConn, err := sql.Open(`mysql`, connection)
 	if err != nil {
 		fmt.Println(err)
