@@ -97,3 +97,35 @@ func (r *repository) View(ID, Guide int64) *trip.Trip {
 	}
 	return &trip
 }
+
+func (r *repository) Get() []*trip.Trip {
+	query := `SELECT trip_id, trip_name,trip_description, trip_duration, trip_month,
+	trip_year, trip_location, trip_activity, tour_guide, trip_type FROM trip`
+	rows, err := r.conn.Query(query)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	result := make([]*trip.Trip, 0)
+	for rows.Next() {
+		trips := new(trip.Trip)
+		err := rows.Scan(
+			&trips.ID,
+			&trips.Name,
+			&trips.Description,
+			&trips.Duration,
+			&trips.Month,
+			&trips.Year,
+			&trips.Location,
+			&trips.Activity,
+			&trips.Guide,
+			&trips.Type,
+		)
+		if err != nil {
+			log.Fatal(err)
+		}
+		result = append(result, trips)
+	}
+	return result
+}

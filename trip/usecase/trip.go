@@ -24,3 +24,7 @@ func (s *service) SearchTrip(Location, Duration, Traveler, Month, Year string) [
 func (s *service) ViewTrip(ID, Guide int64) *trip.Trip {
 	return s.repo.View(ID, Guide)
 }
+
+func (s *service) GetTrips() []*trip.Trip {
+	return s.repo.Get()
+}

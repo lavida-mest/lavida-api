@@ -25,4 +25,5 @@ type Repository interface {
 	Store(trip *Trip) error
 	Search(Location, Duration, Traveler, Month, Year string) []*Trip
 	View(ID, Guide int64) *Trip
+	Get() []*Trip
 }
