@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 
 	_categoryRepo "github.com/muathendirangu/lavida-api/category/mysql"
 	_categoryUsecase "github.com/muathendirangu/lavida-api/category/usecase"
@@ -21,16 +22,16 @@ import (
 )
 
 func main() {
-	// // loads values from .env into the system
-	// if err := godotenv.Load(); err != nil {
-	// 	log.Print("sad .env file found")
-	// }
+	// loads values from .env into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("sad .env file found")
+	}
 
-	// var err error
-	// err = godotenv.Load()
-	// if err != nil {
-	// 	log.Fatalf("Error getting env, %v", err)
-	// }
+	var err error
+	err = godotenv.Load()
+	if err != nil {
+		log.Fatalf("Error getting env, %v", err)
+	}
 
 	connection := fmt.Sprintf("bepve9XYNW:swi603Rx15@tcp(remotemysql.com:3306)/bepve9XYNW")
 	// connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
