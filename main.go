@@ -66,7 +66,7 @@ func main() {
 
 	errs := make(chan error, 2)
 	go func() {
-		errs <- http.ListenAndServe(":"+os.Getenv("APP_PORT"), srv)
+		errs <- http.ListenAndServe(":"+os.Getenv("PORT"), srv)
 	}()
 	go func() {
 		c := make(chan os.Signal, 1)
