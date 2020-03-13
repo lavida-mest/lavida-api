@@ -33,9 +33,9 @@ func main() {
 		log.Fatalf("Error getting env, %v", err)
 	}
 
-	connection := fmt.Sprintf("bepve9XYNW:swi603Rx15@tcp(remotemysql.com:3306)/bepve9XYNW")
-	// connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
-	// os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
+	// connection := fmt.Sprintf("mysql://b1421386d75643:01f32b9a@eu-cdbr-west-02.cleardb.net/heroku_f98b30600d2441a?reconnect=true")
+	connection := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+		os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_NAME"))
 	dbConn, err := sql.Open(`mysql`, connection)
 	if err != nil {
 		fmt.Println(err)
