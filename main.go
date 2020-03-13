@@ -71,7 +71,7 @@ func main() {
 	go func() {
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, syscall.SIGINT)
-		errs <- fmt.Errorf("%s", <-c)
+		errs <- fmt.Errorf(" error %s occurred", <-c)
 	}()
 
 	log.Fatal("terminated", <-errs)
