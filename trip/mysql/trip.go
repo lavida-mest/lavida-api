@@ -39,8 +39,7 @@ func (r *repository) Store(trip *trip.Trip) error {
 
 func (r *repository) Search(Traveler, Month, Activity string) []*trip.Trip {
 	query := `SELECT tr.trip_id, tr.trip_name, tr.trip_location, tr.trip_month, tr.trip_year, tr.trip_price , tr.tour_guide, guide.tour_guide_name FROM trip AS tr
-		 INNER JOIN guide ON tr.tour_guide=guide.tour_guide_id WHERE traveler_type=? OR trip_month=? OR trip_activity=? 
-	 AND guide.tour_guide_id=tr.tour_guide`
+		 INNER JOIN guide ON tr.tour_guide=guide.tour_guide_id WHERE traveler_type=? OR trip_month=? OR trip_activity=?`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		log.Fatal(err)
