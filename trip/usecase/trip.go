@@ -17,8 +17,8 @@ func (s *service) AddTrip(trip *trip.Trip) error {
 	return s.repo.Store(trip)
 }
 
-func (s *service) SearchTrip(Traveler, Month, Activity string) []*trip.Trip {
-	return s.repo.Search(Traveler, Month, Activity)
+func (s *service) SearchTrip(Traveler, Month, Activity, Category string) []*trip.Trip {
+	return s.repo.Search(Traveler, Month, Activity, Category)
 }
 
 func (s *service) ViewTrip(ID, Guide int64) *trip.Trip {

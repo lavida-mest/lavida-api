@@ -20,7 +20,7 @@ func (g *tripHandler) router() chi.Router {
 
 	r.Route("/", func(r chi.Router) {
 		r.Post("/", g.addTrip)
-		r.Get("/search/{traveler_type}&{trip_month}&{trip_activity}", g.searchTrip)
+		r.Get("/search/{traveler_type}&{trip_month}&{trip_activity}&{trip_category}", g.searchTrip)
 		r.Get("/{ID}&{guideID}", g.viewTrip)
 		r.Get("/", g.getTrips)
 	})
@@ -45,7 +45,8 @@ func (g *tripHandler) searchTrip(w http.ResponseWriter, r *http.Request) {
 	Traveler := chi.URLParam(r, "traveler_type")
 	Month := chi.URLParam(r, "trip_month")
 	Activity := chi.URLParam(r, "trip_activity")
-	trips := g.usecase.SearchTrip(Traveler, Month, Activity)
+	Category := chi.URLParam(r, "trip_category")
+	trips := g.usecase.SearchTrip(Traveler, Month, Activity, Category)
 	payload, err := json.Marshal(trips)
 	if err != nil {
 		log.Fatal(err)

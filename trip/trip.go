@@ -23,7 +23,7 @@ type Trip struct {
 //Repository defines how to store Trip
 type Repository interface {
 	Store(trip *Trip) error
-	Search(Traveler, Month, Activity string) []*Trip
+	Search(Traveler, Month, Activity, Category string) []*Trip
 	View(ID, Guide int64) *Trip
 	Get() []*Trip
 }
