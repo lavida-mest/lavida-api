@@ -19,9 +19,24 @@ func New(conn *sql.DB) trip.Repository {
 }
 
 func (r *repository) Store(trip *trip.Trip) error {
-	query := `INSERT INTO trip (trip_name, trip_location, trip_description, trip_activity, trip_price, trip_capacity, 
-		trip_month, trip_year, trip_duration, trip_type, traveler_type, price_visibilty, trip_availability, 
-		trip_status,tour_guide) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+	query := `INSERT INTO trip(
+					trip_name,
+					trip_location,
+					trip_description,
+					trip_activity,
+					trip_price,
+					trip_capacity,
+					trip_month,
+					trip_year,
+					trip_duration,
+					trip_type,
+					traveler_type,
+					price_visibilty,
+					trip_availability,
+					trip_status,
+					tour_guide
+				)
+				VALUES(?, ?, ?,	?, ?, ?, ?,	?, ?, ?, ?,	?, ?, ?, ?)`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		return err
@@ -86,16 +101,31 @@ func (r *repository) Search(Traveler, Month, Activity, Category string) []*trip.
 
 func (r *repository) View(ID, Guide int64) *trip.Trip {
 	var trip = trip.Trip{}
-	query := `SELECT trip_id, trip_name, trip_location, trip_description, trip_price, tour_guide_name, trip.tour_guide, trip_category.category_name, 
-	trip_activity FROM trip INNER JOIN guide ON trip.tour_guide = guide.tour_guide_id 
-	INNER JOIN trip_category ON guide.category_id=trip_category.category_id WHERE trip_id=? AND guide.tour_guide_id=?;`
+	query := `SELECT
+					trip_id,
+					trip_name,
+					trip_location,
+					trip_description,
+					trip_price,
+					tour_guide_name,
+					trip_duration,
+					trip.tour_guide,
+					trip_category.category_name,
+					trip_activity
+				FROM
+					trip
+				INNER JOIN guide ON trip.tour_guide = guide.tour_guide_id
+				INNER JOIN trip_category ON guide.category_id = trip_category.category_id
+				WHERE
+					trip_id = ? AND guide.tour_guide_id = ?;`
 	err := r.conn.QueryRow(query, ID, Guide).Scan(
 		&trip.ID,
 		&trip.Name,
 		&trip.Location,
 		&trip.Description,
 		&trip.Price,
-		&trip.Month,    //references tour_guide_name
+		&trip.Month, //references tour_guide_name
+		&trip.Duration,
 		&trip.Capacity, //references tour_guide
 		&trip.Status,   //references category_name
 		&trip.Activity,
@@ -111,8 +141,19 @@ func (r *repository) View(ID, Guide int64) *trip.Trip {
 }
 
 func (r *repository) Get() []*trip.Trip {
-	query := `SELECT trip_id, trip_name,trip_description, trip_duration, trip_month,
-	trip_year, trip_location, trip_activity, tour_guide, trip_type FROM trip`
+	query := `SELECT
+					trip_id,
+					trip_name,
+					trip_description,
+					trip_duration,
+					trip_month,
+					trip_year,
+					trip_location,
+					trip_activity,
+					tour_guide,
+					trip_type
+				FROM
+					trip`
 	rows, err := r.conn.Query(query)
 	if err != nil {
 		log.Fatal(err)
