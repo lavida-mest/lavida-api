@@ -19,7 +19,13 @@ func New(conn *sql.DB) guide.Repository {
 }
 
 func (r *repository) Store(guide *guide.Guide) error {
-	query := `INSERT INTO guide (tour_guide_name, tour_guide_email, tour_guide_number, category_id) VALUES(?,?,?,?)`
+	query := `INSERT INTO guide(
+						tour_guide_name,
+						tour_guide_email,
+						tour_guide_number,
+						category_id
+					)
+					VALUES(?, ?, ?, ?)`
 	stmt, err := r.conn.Prepare(query)
 	if err != nil {
 		return err
